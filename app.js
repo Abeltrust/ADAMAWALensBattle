@@ -3,28 +3,44 @@ import './style.css'
 const WHATSAPP_NUMBER = '2347043079022'
 const GOOGLE_SHEET_ID = '1437oGWma9aylKVl59xohclaREudnsvO8TZjGS4LDg8Y'
 const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`
+const GOOGLE_SHEET_GVIZ_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv`
 const LOCAL_CSV_PATH = '/assets/contestants.csv'
-const VOTES_KEY = 'adamaway_votes'
-const VOTE_COUNT_KEY = 'adamaway_vote_counts'
+
+// Automatically purge any old client-side vote caches so only official votes show
+try {
+  localStorage.removeItem('adamaway_vote_counts')
+  localStorage.removeItem('adamaway_votes')
+} catch (e) {}
 
 export async function loadContestants() {
-  // 1. Try Live Google Sheet (instant score updates from admin)
-  try {
-    const res = await fetch(`${GOOGLE_SHEET_CSV_URL}&_t=${Date.now()}`)
-    if (res.ok) {
-      const text = await res.text()
-      if (text && !text.includes('<!doctype html>') && !text.includes('<html') && text.includes('name')) {
-        const parsed = parseCSV(text)
-        if (parsed.length > 0) {
-          return parsed
+  // 1. Try Live Google Sheet as the primary source of truth
+  const endpoints = [
+    `${GOOGLE_SHEET_CSV_URL}&_t=${Date.now()}`,
+    `${GOOGLE_SHEET_GVIZ_URL}&_t=${Date.now()}`,
+  ]
+
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url)
+      if (res.ok) {
+        const text = await res.text()
+        // Ensure Google Sheet response is actual CSV and not a Google login page
+        if (text && !text.includes('<!doctype html>') && !text.includes('<html') && text.includes('name')) {
+          const parsed = parseCSV(text)
+          if (parsed.length > 0) {
+            console.log('✓ Successfully loaded official contestants data from Google Sheet')
+            return parsed
+          }
         }
       }
+    } catch (e) {
+      // Continue to next endpoint
     }
-  } catch (e) {
-    console.warn('Google Sheet fetch error, falling back to local CSV:', e)
   }
 
-  // 2. Fallback to bundled local CSV
+  console.warn('Google Sheet not publicly viewable yet, using local contestants.csv as fallback.')
+
+  // 2. Fallback to local contestants.csv
   try {
     const res = await fetch(LOCAL_CSV_PATH)
     if (!res.ok) throw new Error('Failed to load local CSV')
@@ -85,39 +101,24 @@ function parseCSVLine(line) {
 
 
 export function getLocalVotes() {
-  try {
-    const stored = localStorage.getItem(VOTES_KEY)
-    return new Set(stored ? JSON.parse(stored) : [])
-  } catch {
-    return new Set()
-  }
+  return new Set()
 }
 
 export function saveLocalVote(name) {
-  const votes = getLocalVotes()
-  votes.add(name)
-  localStorage.setItem(VOTES_KEY, JSON.stringify([...votes]))
+  // No client-side vote mutations
 }
 
 export function getStoredVoteCounts() {
-  try {
-    const stored = localStorage.getItem(VOTE_COUNT_KEY)
-    return stored ? JSON.parse(stored) : {}
-  } catch {
-    return {}
-  }
+  return {}
 }
 
 export function saveStoredVoteCounts(counts) {
-  localStorage.setItem(VOTE_COUNT_KEY, JSON.stringify(counts))
+  // No client-side vote mutations
 }
 
 export function getMergedContestants(baseContestants) {
-  const storedCounts = getStoredVoteCounts()
-  return baseContestants.map((c) => ({
-    ...c,
-    votes: (storedCounts[c.name] !== undefined ? storedCounts[c.name] : c.votes),
-  })).sort((a, b) => b.votes - a.votes)
+  // Purely use the official vote numbers from the source (Google Sheet)
+  return [...baseContestants].sort((a, b) => (b.votes || 0) - (a.votes || 0))
 }
 
 export function getMaxVotes(contestants) {
@@ -290,13 +291,8 @@ export function showVoteConfirmModal(contestant) {
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
 
   document.getElementById('vote-modal-confirm').addEventListener('click', () => {
-    const storedCounts = getStoredVoteCounts()
-    const currentCount = storedCounts[contestant.name] !== undefined
-      ? storedCounts[contestant.name]
-      : contestant.votes
-    storedCounts[contestant.name] = currentCount + 1
-    saveStoredVoteCounts(storedCounts)
-
+    // Note: Clicking the button does NOT increment votes on the site.
+    // Votes only update when the admin verifies payment and enters them in Google Sheets.
     const message = 'ADAMAWA LENS BATTLE 2026 — VOTE\n\n'
       + 'Contestant No. ' + contestant.number + '\n'
       + 'Name: ' + contestant.name + '\n'
