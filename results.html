@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="/assets/images/logo.jpg" />
+    <link rel="shortcut icon" href="/favicon.jpg" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Results | Adamawa Lens Battle 2026</title>
+    <meta name="description" content="Real-time voting results for the Adamawa Lens Battle 2026 photography competition." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <nav class="navbar" id="navbar">
+        <a class="navbar-logo" href="/">
+          <img src="/assets/images/logo.jpg" alt="Adamawa Lens Battle Logo" class="navbar-logo-img" />
+          <div class="navbar-logo-text">ADAMAWA<span>Lens Battle</span></div>
+        </a>
+        <div class="navbar-links">
+          <a href="/">Home</a>
+          <a href="/contestants.html">Contestants</a>
+          <a href="/results.html" class="active">Live Results</a>
+          <a href="/about.html">About</a>
+        </div>
+        <div class="navbar-actions">
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="navbar-social-link" aria-label="Facebook Page" title="Follow us on Facebook">
+            <svg class="facebook-logo-svg" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+          </a>
+          <button class="navbar-cta" id="nav-cta">Vote Now</button>
+          <button class="navbar-hamburger" id="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="navbar-mobile-menu" id="navbar-mobile-menu" aria-hidden="true">
+        <div class="mobile-nav-links">
+          <a href="/"><i data-lucide="home"></i> Home</a>
+          <a href="/contestants.html"><i data-lucide="users"></i> Contestants</a>
+          <a href="/results.html" class="active"><i data-lucide="trophy"></i> Live Results</a>
+          <a href="/about.html"><i data-lucide="info"></i> About</a>
+        </div>
+        <div class="mobile-nav-footer">
+          <a href="/contestants.html" class="mobile-nav-cta">
+            <i data-lucide="vote"></i>
+            Vote Now
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="mobile-nav-social">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+            <span>Follow on Facebook</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- <section class="page-header">
+        <div class="page-header-bg">
+          <div class="page-header-lens-rings">
+            <div class="page-header-ring"></div>
+            <div class="page-header-ring"></div>
+            <div class="page-header-ring"></div>
+          </div>
+        </div>
+        <div class="page-header-content">
+          <div class="page-header-eyebrow">Real-Time Standings</div>
+          <h1 class="page-header-title">Live Results</h1>
+          <div class="gold-line"></div>
+          <p class="page-header-subtitle">
+            Watch the leaderboard update in real time as votes come in from across all 21 LGAs.
+            Every vote counts.
+          </p>
+        </div>
+      </section> -->
+
+      <section class="section">
+         <div class="page-header-bg">
+          <div class="page-header-lens-rings">
+            <div class="page-header-ring"></div>
+            <div class="page-header-ring"></div>
+            <div class="page-header-ring"></div>
+          </div>
+        </div>
+        <div class="section-header">
+          <div class="section-eyebrow">The Leaders</div>
+          <h2 class="section-title">Top 5 Contestants</h2>
+          <div class="gold-line"></div>
+          <p class="section-subtitle">
+            The five photographers leading the battle, with their winning photos.
+          </p>
+        </div>
+        <div class="top5-grid" id="top5-pictures">
+          <div class="loading-spinner"></div>
+        </div>
+      </section>
+
+      <section class="live-results">
+        <div class="section">
+          <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-eyebrow">Vote Distribution</div>
+            <h2 class="section-title">Results Chart</h2>
+            <div class="gold-line"></div>
+            <p class="section-subtitle">
+              A visual breakdown of votes across the top 8 photographers.
+            </p>
+          </div>
+          <div class="chart-container">
+            <canvas id="results-chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header" style="margin-bottom: 2rem;">
+          <div class="live-badge">
+            <span class="live-badge-dot"></span>
+            Live
+          </div>
+          <h2 class="section-title">Full Leaderboard</h2>
+          <div class="gold-line"></div>
+        </div>
+        <div class="leaderboard" id="leaderboard">
+          <div class="loading-spinner"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-eyebrow">Quick Vote</div>
+          <h2 class="section-title">Cast Your Vote</h2>
+          <div class="gold-line"></div>
+          <p class="section-subtitle">
+            Haven't voted yet? Head to the contestants page and support your favorite photographer.
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <a href="/contestants.html" class="btn-primary">Vote Now</a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-lens">
+          <img src="/assets/images/logo.jpg" alt="Adamawa Lens Battle Logo" class="footer-logo-img" />
+        </div>
+        <div class="footer-logo">ADAMAWA <span>Lens Battle</span></div>
+        <p class="footer-tagline">The 21 LGAs · One Vision</p>
+        <p class="footer-text">
+          A celebration of photography, culture, and creative talent across Adamawa State.
+          Every vote helps a photographer rise in the ranks and gain recognition.
+        </p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook Page">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+            <span>Follow us on Facebook</span>
+          </a>
+        </div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/contestants.html">Contestants</a>
+          <a href="/results.html">Live Results</a>
+          <a href="/about.html">About</a>
+        </div>
+        <div class="footer-bottom">
+          © 2026 Adamawa Lens Battle. All rights reserved.
+        </div>
+      </footer>
+
+      <div class="toast" id="toast"></div>
+    </div>
+    <script type="module" src="/results.js"></script>
+  </body>
+</html>
+

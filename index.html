@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="/assets/images/logo.jpg" />
+    <link rel="shortcut icon" href="/favicon.jpg" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adamawa Lens Battle 2026 — Official Photography Competition</title>
+    <meta name="description" content="The Adamawa Lens Battle 2026 — a premium photography competition celebrating talent across 21 LGAs. Vote for your favorite photographers and help crown the champion." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+    <meta property="og:image" content="/assets/images/header.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/images/header.jpg">
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Flyer Popup Modal -->
+      <div class="flyer-overlay" id="flyer-overlay" style="display: none;">
+        <div class="flyer-modal">
+          <div class="flyer-countdown-bar"><div class="flyer-countdown-fill" id="flyer-countdown-fill"></div></div>
+          <button class="flyer-close" id="flyer-close" aria-label="Close flyer">&#x2715; <span id="flyer-timer">8</span></button>
+          <img src="/assets/images/flyer.jpg" alt="Adamawa Lens Battle 2026 Flyer" class="flyer-img" />
+          <a href="/contestants.html" class="flyer-cta-btn">View Contestants &amp; Vote Now</a>
+        </div>
+      </div>
+
+      <nav class="navbar" id="navbar">
+        <a class="navbar-logo" href="/">
+          <img src="/assets/images/logo.jpg" alt="Adamawa Lens Battle Logo" class="navbar-logo-img" />
+          <div class="navbar-logo-text">ADAMAWA<span>Lens Battle</span></div>
+        </a>
+        <div class="navbar-links">
+          <a href="/" class="active">Home</a>
+          <a href="/contestants.html">Contestants</a>
+          <a href="/results.html">Live Results</a>
+          <a href="/about.html">About</a>
+        </div>
+        <div class="navbar-actions">
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="navbar-social-link" aria-label="Facebook Page" title="Follow us on Facebook">
+            <svg class="facebook-logo-svg" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+          </a>
+          <button class="navbar-cta" id="nav-cta">Vote Now</button>
+          <button class="navbar-hamburger" id="navbar-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="navbar-mobile-menu" id="navbar-mobile-menu" aria-hidden="true">
+        <div class="mobile-nav-links">
+          <a href="/" class="active"><i data-lucide="home"></i> Home</a>
+          <a href="/contestants.html"><i data-lucide="users"></i> Contestants</a>
+          <a href="/results.html"><i data-lucide="trophy"></i> Live Results</a>
+          <a href="/about.html"><i data-lucide="info"></i> About</a>
+        </div>
+        <div class="mobile-nav-footer">
+          <a href="/contestants.html" class="mobile-nav-cta">
+            <i data-lucide="vote"></i>
+            Vote Now
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="mobile-nav-social">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+            <span>Follow on Facebook</span>
+          </a>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-bg">
+          <!-- <img src="/assets/images/header.jpg" alt="Adamawa Lens Battle Banner" class="hero-header-img" />
+          <div class="hero-bg-overlay"></div>-->
+          <div class="hero-grid"></div>
+          <div class="hero-lens-rings">
+            <div class="hero-lens-ring"></div>
+            <div class="hero-lens-ring"></div>
+            <div class="hero-lens-ring"></div>
+            <div class="hero-lens-ring"></div>
+          </div>
+        </div> 
+        <div class="hero-content">
+          <div class="hero-logo-wrap">
+            <img src="/assets/images/logo.jpg" alt="Adamawa Lens Battle 2026 Official Logo" class="hero-logo-img" />
+          </div>
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            2026 Edition · Now Live
+          </div>
+          <h1 class="hero-title">ADAMAWA <span class="accent">LENS BATTLE</span></h1>
+          <p class="hero-tagline">The 21 LGAs · One Vision</p>
+          <div class="gold-line"></div>
+          <p class="hero-subtitle">
+            The ultimate photography competition celebrating talent across Adamawa's 21 Local
+            Government Areas. Browse stunning entries, cast your vote via WhatsApp, and help crown
+            this year's champion.
+          </p>
+          <div class="hero-meta">
+            <span class="hero-meta-item">21 LGAs</span>
+            <span class="hero-meta-divider"></span>
+            <span class="hero-meta-item">12 Contestants</span>
+            <span class="hero-meta-divider"></span>
+            <span class="hero-meta-item">1 Winner</span>
+          </div>
+          <div class="hero-actions">
+            <a href="/contestants.html" class="btn-primary">Start Voting</a>
+            <a href="/results.html" class="btn-secondary">View Live Results</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-value" id="stat-contestants">12</div>
+              <div class="hero-stat-label">Contestants</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value" id="stat-votes">—</div>
+              <div class="hero-stat-label">Total Votes</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value" id="stat-lgas">21</div>
+              <div class="hero-stat-label">LGAs</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-to-vote" id="how-to-vote">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-eyebrow">Simple Process</div>
+            <h2 class="section-title">How to Vote</h2>
+            <div class="gold-line"></div>
+            <p class="section-subtitle">
+              Each vote costs <strong>&#x20A6;100</strong>. Vote as many times as you like &mdash; every payment counts.
+            </p>
+          </div>
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">01</div>
+              <h3 class="step-title">Browse Contestants</h3>
+              <p class="step-desc">Explore the gallery of twelve talented photographers from across Adamawa's LGAs and pick your favourite.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">02</div>
+              <h3 class="step-title">Pay &#x20A6;100 to Vote</h3>
+              <p class="step-desc">Transfer &#x20A6;100 to <strong>Sterling Bank · 0093415813 · Adamawa Lens Battle</strong> for each vote you want to cast.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">03</div>
+              <h3 class="step-title">Send Proof on WhatsApp</h3>
+              <p class="step-desc">Click Vote on your chosen contestant, then send your payment receipt via WhatsApp to confirm your vote.</p>
+            </div>
+          </div>
+
+          <!-- Payment Details Card -->
+          <div class="payment-info-card">
+            <div class="payment-info-badge">PAYMENT DETAILS</div>
+            <h3 class="payment-info-title">Transfer to this Account</h3>
+            <div class="payment-info-rows">
+              <div class="payment-info-row">
+                <span class="payment-info-label">Bank</span>
+                <span class="payment-info-value">Sterling Bank</span>
+              </div>
+              <div class="payment-info-row">
+                <span class="payment-info-label">Account Number</span>
+                <span class="payment-info-value highlight">0093415813</span>
+              </div>
+              <div class="payment-info-row">
+                <span class="payment-info-label">Account Name</span>
+                <span class="payment-info-value">Adamawa Lens Battle</span>
+              </div>
+              <div class="payment-info-row payment-info-cost">
+                <span class="payment-info-label">Cost per Vote</span>
+                <span class="payment-info-value gold">&#x20A6;100</span>
+              </div>
+            </div>
+            <a href="/contestants.html" class="payment-info-cta">Browse &amp; Vote Now</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-eyebrow">The Competitors</div>
+          <h2 class="section-title">Featured Contestants</h2>
+          <div class="gold-line"></div>
+          <p class="section-subtitle">
+            A glimpse of the talent. Visit the full contestants page to see everyone and cast your vote.
+          </p>
+        </div>
+        <div class="contestants-grid" id="featured-grid">
+          <div class="loading-spinner"></div>
+        </div>
+        <div style="text-align:center; margin-top: 2.5rem;">
+          <a href="/contestants.html" class="btn-secondary">View All Contestants</a>
+        </div>
+      </section>
+
+      <section class="live-results">
+        <div class="section">
+          <div class="section-header">
+            <div class="live-badge">
+              <span class="live-badge-dot"></span>
+              Live
+            </div>
+            <h2 class="section-title">Top 5 Leaders</h2>
+            <div class="gold-line"></div>
+            <p class="section-subtitle">
+              A quick look at who's leading. See the full leaderboard on the results page.
+            </p>
+          </div>
+          <div class="leaderboard" id="home-leaderboard">
+            <div class="loading-spinner"></div>
+          </div>
+          <div style="text-align:center; margin-top: 2.5rem;">
+            <a href="/results.html" class="btn-secondary">Full Leaderboard</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-lens">
+          <img src="/assets/images/logo.jpg" alt="Adamawa Lens Battle Logo" class="footer-logo-img" />
+        </div>
+        <div class="footer-logo">ADAMAWA <span>Lens Battle</span></div>
+        <p class="footer-tagline">The 21 LGAs · One Vision</p>
+        <p class="footer-text">
+          A celebration of photography, culture, and creative talent across Adamawa State.
+          Every vote helps a photographer rise in the ranks and gain recognition.
+        </p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61568570861098" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook Page">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path fill="#FFFFFF" d="M16.671 15.469L17.203 12h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.514V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.469h3.047v8.385c.616.097 1.248.146 1.875.146s1.259-.049 1.875-.146v-8.385h2.796z"/>
+            </svg>
+            <span>Follow us on Facebook</span>
+          </a>
+        </div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/contestants.html">Contestants</a>
+          <a href="/results.html">Live Results</a>
+          <a href="/about.html">About</a>
+        </div>
+        <div class="footer-bottom">
+          © 2026 Adamawa Lens Battle. All rights reserved.
+        </div>
+      </footer>
+
+      <div class="toast" id="toast"></div>
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      (function() {
+        const overlay = document.getElementById('flyer-overlay');
+        const closeBtn = document.getElementById('flyer-close');
+        const timerEl = document.getElementById('flyer-timer');
+        const fillEl = document.getElementById('flyer-countdown-fill');
+        if (!overlay) return;
+
+        // Prevent double popup: if dismissed or already viewed in this session, do not re-show on refresh
+        if (sessionStorage.getItem('alb_flyer_seen') === 'true') {
+          return;
+        }
+
+        const DURATION = 8;
+        let countdownInterval = null;
+        let autoCloseTimeout = null;
+        let isClosed = false;
+
+        function closeFlyer() {
+          if (isClosed) return;
+          isClosed = true;
+          sessionStorage.setItem('alb_flyer_seen', 'true');
+          overlay.classList.remove('active');
+          if (countdownInterval) clearInterval(countdownInterval);
+          if (autoCloseTimeout) clearTimeout(autoCloseTimeout);
+          setTimeout(function() {
+            overlay.style.display = 'none';
+          }, 350);
+        }
+
+        function startCountdown() {
+          let remaining = DURATION;
+          if (fillEl) {
+            fillEl.style.transition = 'none';
+            fillEl.style.width = '100%';
+            fillEl.getBoundingClientRect(); // force reflow
+            fillEl.style.transition = `width ${DURATION}s linear`;
+            fillEl.style.width = '0%';
+          }
+
+          countdownInterval = setInterval(function() {
+            remaining--;
+            if (timerEl) timerEl.textContent = remaining;
+            if (remaining <= 0) {
+              clearInterval(countdownInterval);
+              closeFlyer();
+            }
+          }, 1000);
+
+          autoCloseTimeout = setTimeout(closeFlyer, DURATION * 1000);
+        }
+
+        setTimeout(function() {
+          if (isClosed) return;
+          overlay.style.display = 'flex';
+          requestAnimationFrame(function() {
+            overlay.classList.add('active');
+            startCountdown();
+          });
+        }, 700);
+
+        if (closeBtn) closeBtn.addEventListener('click', closeFlyer);
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) closeFlyer();
+        });
+      })();
+    </script>
+  </body>
+</html>
