@@ -3309,18 +3309,98 @@ body {
 }
 
 /* ---- Responsive ---- */
+/* ---- Mobile: stack podium vertically ---- */
 @media (max-width: 640px) {
-  .podium-stage {
-    gap: 0.6rem;
+  .podium-wrapper {
+    padding: 0.5rem 1rem 2rem;
   }
-  .podium-first .podium-photo { width: 110px; height: 140px; }
+
+  /* Stack: 1st on top full-width, 2nd+3rd side-by-side below */
+  .podium-stage {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  /* 1st place: horizontal card (photo left, info right) */
+  .podium-first {
+    order: 1;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    text-align: left;
+  }
+  .podium-first .podium-status-badge { align-self: flex-start; }
+  .podium-first .podium-photo-wrap   { flex-shrink: 0; margin-bottom: 0; }
+  .podium-first .podium-photo        { width: 90px; height: 110px; }
+  .podium-first .podium-info         { padding: 0; flex: 1; }
+  .podium-first .podium-name         { font-size: 1rem; }
+  .podium-first .podium-votes        { font-size: 1.4rem; }
+  .podium-first .podium-base         { display: none; }
+
+  /* Wrap 2nd & 3rd in a sub-row */
+  .podium-second,
+  .podium-third {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Inner row wrapper for 2nd + 3rd */
+  .podium-stage::after {
+    content: '';
+    display: none;
+  }
+
+  .podium-second { order: 2; }
+  .podium-third  { order: 3; }
+
+  /* Make 2nd and 3rd sit side-by-side */
+  .podium-stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .podium-first  { grid-column: 1; grid-row: 1; }
+
+  /* 2nd and 3rd share row 2 */
+  .podium-second,
+  .podium-third {
+    display: flex;
+  }
+
+  .podium-stage .podium-second,
+  .podium-stage .podium-third {
+    width: 100%;
+  }
+
+  /* Re-apply grid properly for 2+3 side by side */
+  .podium-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.75rem;
+  }
+  .podium-first  {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .podium-second { grid-column: 1; grid-row: 2; order: unset; }
+  .podium-third  { grid-column: 2; grid-row: 2; order: unset; }
+
+  /* Size down 2nd & 3rd photos */
   .podium-second .podium-photo,
-  .podium-third  .podium-photo { width: 80px; height: 105px; }
-  .podium-first  .podium-name  { font-size: 0.85rem; }
-  .podium-name  { font-size: 0.75rem; }
-  .podium-lga   { font-size: 0.6rem; }
-  .podium-votes { font-size: 1rem; }
-  .podium-first .podium-votes { font-size: 1.2rem; }
-  .podium-medal { font-size: 1.4rem; }
-  .podium-first .podium-medal { font-size: 1.8rem; }
+  .podium-third  .podium-photo { width: 80px; height: 100px; }
+  .podium-second .podium-base,
+  .podium-third  .podium-base  { height: 22px; }
+
+  /* Text scaling */
+  .podium-name         { font-size: 0.78rem; }
+  .podium-lga          { font-size: 0.62rem; }
+  .podium-votes        { font-size: 0.95rem; }
+  .podium-label        { font-size: 0.55rem; }
+  .podium-status-badge { font-size: 0.55rem; padding: 0.2rem 0.55rem; }
 }
