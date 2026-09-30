@@ -108,7 +108,7 @@
           <div class="hero-meta">
             <span class="hero-meta-item">21 LGAs</span>
             <span class="hero-meta-divider"></span>
-            <span class="hero-meta-item">12 Contestants</span>
+            <span class="hero-meta-item">21 Contestants</span>
             <span class="hero-meta-divider"></span>
             <span class="hero-meta-item">1 Winner</span>
           </div>
@@ -118,7 +118,7 @@
           </div>
           <div class="hero-stats">
             <div class="hero-stat">
-              <div class="hero-stat-value" id="stat-contestants">12</div>
+              <div class="hero-stat-value" id="stat-contestants">21</div>
               <div class="hero-stat-label">Contestants</div>
             </div>
             <div class="hero-stat">
@@ -147,12 +147,12 @@
             <div class="step-card">
               <div class="step-number">01</div>
               <h3 class="step-title">Browse Contestants</h3>
-              <p class="step-desc">Explore the gallery of twelve talented photographers from across Adamawa's LGAs and pick your favourite.</p>
+              <p class="step-desc">Explore the gallery of twenty-one talented photographers from across Adamawa's LGAs and pick your favourite.</p>
             </div>
             <div class="step-card">
               <div class="step-number">02</div>
               <h3 class="step-title">Pay &#x20A6;100 to Vote</h3>
-              <p class="step-desc">Transfer &#x20A6;100 to <strong>Sterling Bank · 0093415813 · Adamawa Lens Battle</strong> for each vote you want to cast.</p>
+              <p class="step-desc">Transfer &#x20A6;100 to <strong>Sterling Bank · xxxxxxxxx · Adamawa Lens Battle</strong> for each vote you want to cast.</p>
             </div>
             <div class="step-card">
               <div class="step-number">03</div>
@@ -172,7 +172,10 @@
               </div>
               <div class="payment-info-row">
                 <span class="payment-info-label">Account Number</span>
-                <span class="payment-info-value highlight">0093415813</span>
+                <span class="payment-info-value highlight" style="display:flex;align-items:center;gap:8px;">
+                  <span id="acct-num-home">xxxxxxxxx</span>
+                  <button onclick="(function(){navigator.clipboard.writeText('xxxxxxxxx').then(function(){var b=document.getElementById('copy-home-btn');b.textContent='✓ Copied!';setTimeout(function(){b.textContent='Copy';},2000);});})()" id="copy-home-btn" style="background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.4);color:#d4af37;border-radius:4px;padding:2px 8px;font-size:0.75rem;cursor:pointer;white-space:nowrap;">Copy</button>
+                </span>
               </div>
               <div class="payment-info-row">
                 <span class="payment-info-label">Account Name</span>
@@ -188,20 +191,20 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section results-podium-section">
         <div class="section-header">
           <div class="section-eyebrow">The Competitors</div>
-          <h2 class="section-title">Featured Contestants</h2>
+          <h2 class="section-title">Top 3 Contestants</h2>
           <div class="gold-line"></div>
           <p class="section-subtitle">
-            A glimpse of the talent. Visit the full contestants page to see everyone and cast your vote.
+            The current leaders in the battle. Browse all 21 contestants and cast your vote.
           </p>
         </div>
-        <div class="contestants-grid" id="featured-grid">
+        <div class="podium-wrapper" id="featured-grid">
           <div class="loading-spinner"></div>
         </div>
-        <div style="text-align:center; margin-top: 2.5rem;">
-          <a href="/contestants.html" class="btn-secondary">View All Contestants</a>
+        <div style="text-align:center; margin-top: 2rem;">
+          <a href="/contestants.html" class="btn-primary">View All Contestants &amp; Vote</a>
         </div>
       </section>
 

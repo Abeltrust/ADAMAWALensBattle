@@ -83,7 +83,7 @@
         </div>
       </section> -->
 
-      <section class="section">
+      <section class="section results-podium-section">
          <div class="page-header-bg">
           <div class="page-header-lens-rings">
             <div class="page-header-ring"></div>
@@ -92,14 +92,14 @@
           </div>
         </div>
         <div class="section-header">
-          <div class="section-eyebrow">The Leaders</div>
-          <h2 class="section-title">Top 5 Contestants</h2>
+          <div class="section-eyebrow">Current Standings</div>
+          <h2 class="section-title">Top 3 Leaders</h2>
           <div class="gold-line"></div>
           <p class="section-subtitle">
-            The five photographers leading the battle, with their winning photos.
+            The current front-runners in the battle. One will be crowned champion.
           </p>
         </div>
-        <div class="top5-grid" id="top5-pictures">
+        <div class="podium-wrapper" id="top5-pictures">
           <div class="loading-spinner"></div>
         </div>
       </section>
@@ -122,12 +122,29 @@
 
       <section class="section">
         <div class="section-header" style="margin-bottom: 2rem;">
-          <div class="live-badge">
+          <!-- <div class="live-badge">
             <span class="live-badge-dot"></span>
             Live
-          </div>
+          </div> -->
           <h2 class="section-title">Full Leaderboard</h2>
           <div class="gold-line"></div>
+        </div>
+        <div class="contestants-search-wrap" style="margin-bottom:1.5rem;">
+          <div class="contestants-search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input
+              type="text"
+              id="leaderboard-search"
+              class="contestants-search-input"
+              placeholder="Search leaderboard by name or LGA..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button id="leaderboard-search-clear" class="search-clear-btn" aria-label="Clear search" style="display:none;">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="contestants-search-count" id="leaderboard-search-count"></div>
         </div>
         <div class="leaderboard" id="leaderboard">
           <div class="loading-spinner"></div>

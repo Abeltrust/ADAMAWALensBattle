@@ -1,10 +1,7 @@
 import './style.css'
 
-const WHATSAPP_NUMBER = '2347043079022'
-const GOOGLE_SHEET_ID = '1437oGWma9aylKVl59xohclaREudnsvO8TZjGS4LDg8Y'
-const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`
-const GOOGLE_SHEET_GVIZ_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv`
-const LOCAL_CSV_PATH = '/assets/contestants.csv'
+const WHATSAPP_NUMBER = '2348141003660'
+const CSV_PATH = '/contestants.csv'
 
 // Automatically purge any old client-side vote caches so only official votes show
 try {
@@ -13,39 +10,13 @@ try {
 } catch (e) {}
 
 export async function loadContestants() {
-  // 1. Try Live Google Sheet as the primary source of truth
-  const endpoints = [
-    `${GOOGLE_SHEET_CSV_URL}&_t=${Date.now()}`,
-    `${GOOGLE_SHEET_GVIZ_URL}&_t=${Date.now()}`,
-  ]
-
-  for (const url of endpoints) {
-    try {
-      const res = await fetch(url)
-      if (res.ok) {
-        const text = await res.text()
-        // Ensure Google Sheet response is actual CSV and not a Google login page
-        if (text && !text.includes('<!doctype html>') && !text.includes('<html') && text.includes('name')) {
-          const parsed = parseCSV(text)
-          if (parsed.length > 0) {
-            console.log('✓ Successfully loaded official contestants data from Google Sheet')
-            return parsed
-          }
-        }
-      }
-    } catch (e) {
-      // Continue to next endpoint
-    }
-  }
-
-  console.warn('Google Sheet not publicly viewable yet, using local contestants.csv as fallback.')
-
-  // 2. Fallback to local contestants.csv
   try {
-    const res = await fetch(LOCAL_CSV_PATH)
-    if (!res.ok) throw new Error('Failed to load local CSV')
+    const res = await fetch(`${CSV_PATH}?_t=${Date.now()}`)
+    if (!res.ok) throw new Error(`Failed to load ${CSV_PATH}`)
     const text = await res.text()
-    return parseCSV(text)
+    const parsed = parseCSV(text)
+    console.log(`✓ Loaded ${parsed.length} contestants from local CSV`)
+    return parsed
   } catch (e) {
     console.error('Failed to load contestants:', e)
     return []
@@ -54,19 +25,49 @@ export async function loadContestants() {
 
 function parseCSV(text) {
   const lines = text.trim().split('\n')
-  const headers = parseCSVLine(lines[0])
-  const rows = []
 
-  for (let i = 1; i < lines.length; i++) {
+  // Column name mapping: handles both Google Sheet headers and local CSV headers
+  const COL_MAP = {
+    'contestant name': 'name',
+    'name': 'name',
+    'contestant #': 'number',
+    'contestant#': 'number',
+    'number': 'number',
+    'lga': 'lga',
+    'votes': 'votes',
+    'bio': 'bio',
+    'photo reference': 'photo',
+    'photo': 'photo',
+  }
+
+  // Auto-detect the real header row by scanning the first 10 rows.
+  // We look for a row that contains recognisable column keywords.
+  let headerIdx = 0
+  for (let i = 0; i < Math.min(lines.length, 10); i++) {
+    const lower = lines[i].toLowerCase()
+    if (
+      (lower.includes('contestant name') || lower.includes('name')) &&
+      (lower.includes('lga') || lower.includes('votes'))
+    ) {
+      headerIdx = i
+      break
+    }
+  }
+
+  const rawHeaders = parseCSVLine(lines[headerIdx])
+  // Map raw headers to internal field names
+  const headers = rawHeaders.map(h => COL_MAP[h.trim().toLowerCase()] || h.trim())
+
+  const rows = []
+  for (let i = headerIdx + 1; i < lines.length; i++) {
     if (!lines[i].trim()) continue
     const values = parseCSVLine(lines[i])
     const row = {}
-    headers.forEach((h, idx) => {
-      const key = h.trim()
-      if (key) {
-        row[key] = (values[idx] || '').trim()
-      }
+    headers.forEach((key, idx) => {
+      if (key) row[key] = (values[idx] || '').trim()
     })
+    // Skip summary/empty rows that have no contestant name
+    if (!row.name) continue
     row.votes = parseInt(row.votes) || 0
     rows.push(row)
   }
@@ -251,7 +252,16 @@ export function showVoteConfirmModal(contestant) {
           </div>
           <div class="vote-payment-row">
             <span class="vote-payment-label">Account No.</span>
-            <span class="vote-payment-value acct-num">0093415813</span>
+            <span class="vote-payment-value acct-num" style="display:flex;align-items:center;gap:8px;">
+              <span id="acct-number-text">xxxxxxxxx</span>
+              <button id="copy-acct-btn" title="Copy account number" onclick="(function(){
+                navigator.clipboard.writeText('xxxxxxxxx').then(function(){
+                  var btn=document.getElementById('copy-acct-btn');
+                  btn.textContent='✓ Copied!';
+                  setTimeout(function(){btn.textContent='Copy';},2000);
+                });
+              })()" style="background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.4);color:#ffd700;border-radius:4px;padding:2px 8px;font-size:0.75rem;cursor:pointer;white-space:nowrap;">Copy</button>
+            </span>
           </div>
           <div class="vote-payment-row">
             <span class="vote-payment-label">Account Name</span>
@@ -299,7 +309,7 @@ export function showVoteConfirmModal(contestant) {
       + 'LGA: ' + contestant.lga + '\n\n'
       + 'I have made a payment of \u20a6100 to:\n'
       + 'Bank: Sterling Bank\n'
-      + 'Account No: 0093415813\n'
+      + 'Account No: xxxxxxxxx\n'
       + 'Account Name: Adamawa Lens Battle\n\n'
       + 'Please find my proof of payment attached.\n'
       + 'I vote for ' + contestant.name + ' to win the Adamawa Lens Battle 2026!'

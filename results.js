@@ -16,33 +16,45 @@ function renderTop5(contestants) {
     return
   }
 
-  const top5 = contestants.slice(0, 5)
-  const maxVotes = getMaxVotes(contestants)
+  const top3 = contestants.slice(0, 3)
+  const [first, second, third] = top3
 
-  container.innerHTML = top5
-    .map((c, index) => {
-      const barWidth = (c.votes / maxVotes) * 100
-      const rankClass = index === 0 ? 'top-1' : index < 3 ? 'top-3' : ''
-      const medal = index === 0 ? 'Champion' : index === 1 ? '2nd Place' : index === 2 ? '3rd Place' : `${index + 1}th`
-      return `
-      <div class="top5-card ${rankClass}" style="animation-delay: ${index * 0.12}s">
-        <div class="top5-photo">
-          <img src="${c.photo}" alt="${c.name}" loading="lazy" />
-          <span class="top5-rank">${index + 1}</span>
+  // Podium layout: 2nd | 1st (big) | 3rd
+  // We render in DOM order: second, first, third
+  // CSS uses order property to position them visually
+
+  const podiumCard = (c, rank) => {
+    if (!c) return ''
+    const statusWords = ['LEADING', 'FOLLOWING', 'CLOSE BEHIND']
+    const labels = ['CURRENTLY LEADING', '2ND PLACE', '3RD PLACE']
+    const rankClasses = ['podium-first', 'podium-second', 'podium-third']
+    return `
+      <div class="podium-card ${rankClasses[rank - 1]}" style="animation-delay:${rank * 0.15}s">
+        <div class="podium-status-badge podium-status-${rank}">${statusWords[rank - 1]}</div>
+        <div class="podium-photo-wrap">
+          <img src="${c.photo}" alt="${c.name}" class="podium-photo" loading="lazy" />
+          <div class="podium-rank-badge">${rank}</div>
         </div>
-        <div class="top5-info">
-          <div class="top5-name">${c.name}</div>
-          <div class="top5-category">${c.lga || ''} LGA · ${medal}</div>
-          <div class="top5-bar-track">
-            <div class="top5-bar-fill" style="width: ${barWidth}%"></div>
-          </div>
-          <div class="top5-votes">${c.votes.toLocaleString()} votes</div>
+        <div class="podium-info">
+          <div class="podium-label">${labels[rank - 1]}</div>
+          <div class="podium-name">${c.name}</div>
+          <div class="podium-lga">${c.lga || ''} LGA</div>
+          <div class="podium-votes">${c.votes.toLocaleString()} <span>votes</span></div>
         </div>
+        <div class="podium-base podium-base-${rank}"></div>
       </div>
     `
-    })
-    .join('')
+  }
+
+  container.innerHTML = `
+    <div class="podium-stage">
+      ${podiumCard(second, 2)}
+      ${podiumCard(first, 1)}
+      ${podiumCard(third, 3)}
+    </div>
+  `
 }
+
 
 function renderLeaderboard(contestants) {
   const leaderboard = document.getElementById('leaderboard')
@@ -164,6 +176,45 @@ async function init() {
   renderTop5(contestants)
   renderChart(contestants)
   renderLeaderboard(contestants)
+
+  // --- Leaderboard search ---
+  const searchInput = document.getElementById('leaderboard-search')
+  const clearBtn    = document.getElementById('leaderboard-search-clear')
+  const countEl     = document.getElementById('leaderboard-search-count')
+
+  function updateCount(filtered, total) {
+    if (!countEl) return
+    countEl.textContent = searchInput && searchInput.value.trim()
+      ? `${filtered} of ${total} contestants`
+      : `${total} contestants`
+  }
+
+  updateCount(contestants.length, contestants.length)
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase()
+      clearBtn && (clearBtn.style.display = q ? 'flex' : 'none')
+      const filtered = q
+        ? contestants.filter(c =>
+            (c.name || '').toLowerCase().includes(q) ||
+            (c.lga  || '').toLowerCase().includes(q)
+          )
+        : contestants
+      renderLeaderboard(filtered)
+      updateCount(filtered.length, contestants.length)
+    })
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = ''
+      clearBtn.style.display = 'none'
+      renderLeaderboard(contestants)
+      updateCount(contestants.length, contestants.length)
+      searchInput && searchInput.focus()
+    })
+  }
 }
 
 init()

@@ -18,6 +18,11 @@ function copyAssets() {
           if (existsSync(srcAssets)) cpSync(srcAssets, publicAssets, { recursive: true })
         }
       }
+
+      // During dev: copy root contestants.csv into public/ so it's served at /contestants.csv
+      const rootCsv = resolve(__dirname, 'contestants.csv')
+      const publicCsv = resolve(__dirname, 'public/contestants.csv')
+      if (existsSync(rootCsv)) cpSync(rootCsv, publicCsv)
     },
     closeBundle() {
       const distAssets = resolve(__dirname, 'dist/assets')
@@ -27,9 +32,10 @@ function copyAssets() {
       const distImages = resolve(distAssets, 'images')
       if (existsSync(srcImages)) cpSync(srcImages, distImages, { recursive: true })
 
-      const srcCsv = resolve(__dirname, 'assets/contestants.csv')
-      const distCsv = resolve(distAssets, 'contestants.csv')
-      if (existsSync(srcCsv)) cpSync(srcCsv, distCsv)
+      // Copy root contestants.csv into dist/ for production
+      const rootCsv = resolve(__dirname, 'contestants.csv')
+      const distCsv = resolve(__dirname, 'dist/contestants.csv')
+      if (existsSync(rootCsv)) cpSync(rootCsv, distCsv)
     },
   }
 }

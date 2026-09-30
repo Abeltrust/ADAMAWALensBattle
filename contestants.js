@@ -75,6 +75,47 @@ async function init() {
   votedContestants = getLocalVotes()
 
   renderContestants(allContestants)
+
+  // --- Search ---
+  const searchInput = document.getElementById('contestants-search')
+  const clearBtn    = document.getElementById('contestants-search-clear')
+  const countEl     = document.getElementById('search-count')
+
+  function updateCount(filtered, total) {
+    if (!countEl) return
+    if (searchInput && searchInput.value.trim()) {
+      countEl.textContent = `${filtered} of ${total} contestants`
+    } else {
+      countEl.textContent = `${total} contestants`
+    }
+  }
+
+  updateCount(allContestants.length, allContestants.length)
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase()
+      clearBtn && (clearBtn.style.display = q ? 'flex' : 'none')
+      const filtered = q
+        ? allContestants.filter(c =>
+            (c.name || '').toLowerCase().includes(q) ||
+            (c.lga  || '').toLowerCase().includes(q)
+          )
+        : allContestants
+      renderContestants(filtered)
+      updateCount(filtered.length, allContestants.length)
+    })
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = ''
+      clearBtn.style.display = 'none'
+      renderContestants(allContestants)
+      updateCount(allContestants.length, allContestants.length)
+      searchInput && searchInput.focus()
+    })
+  }
 }
 
 init()

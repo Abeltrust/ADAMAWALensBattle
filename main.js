@@ -13,53 +13,48 @@ let allContestants = []
 let votedContestants = new Set()
 
 function renderFeatured(contestants) {
-  const grid = document.getElementById('featured-grid')
-  if (!grid) return
+  const container = document.getElementById('featured-grid')
+  if (!container) return
   if (!contestants || contestants.length === 0) {
-    grid.innerHTML = '<div class="empty-state">No contestants available.</div>'
+    container.innerHTML = '<div class="empty-state">No contestants available.</div>'
     return
   }
 
-  // Show only the top 3 contestants on the homepage
-  const featured = contestants.slice(0, 3)
-  const maxVotes = getMaxVotes(contestants)
+  const top3 = contestants.slice(0, 3)
+  const [first, second, third] = top3
 
-  grid.innerHTML = featured
-    .map((c, index) => {
-      return `
-      <div class="contestant-card" data-name="${c.name}" style="animation-delay: ${index * 0.08}s">
-        <div class="contestant-photo">
-          <img src="${c.photo}" alt="${c.name}" loading="lazy" />
-          <div class="contestant-card-overlay">
-            <div class="contestant-card-meta">
-              <span class="contestant-card-num">No. ${c.number || String(index+1).padStart(2,'0')}</span>
-              <span class="contestant-card-lga">${c.lga || ''} LGA</span>
-            </div>
-            <div class="contestant-card-name">${c.name}</div>
-            <button class="contestant-vote-btn" data-name="${c.name}">
-              <i data-lucide="vote"></i>
-              Vote Now
-            </button>
-          </div>
+  const podiumCard = (c, rank) => {
+    if (!c) return ''
+    const statusWords = ['LEADING', 'FOLLOWING', 'CLOSE BEHIND']
+    const labels = ['CURRENTLY LEADING', '2ND PLACE', '3RD PLACE']
+    const rankClasses = ['podium-first', 'podium-second', 'podium-third']
+    return `
+      <div class="podium-card ${rankClasses[rank - 1]}" style="animation-delay:${rank * 0.15}s">
+        <div class="podium-status-badge podium-status-${rank}">${statusWords[rank - 1]}</div>
+        <div class="podium-photo-wrap">
+          <img src="${c.photo}" alt="${c.name}" class="podium-photo" loading="lazy" />
+          <div class="podium-rank-badge">${rank}</div>
         </div>
+        <div class="podium-info">
+          <div class="podium-label">${labels[rank - 1]}</div>
+          <div class="podium-name">${c.name}</div>
+          <div class="podium-lga">${c.lga || ''} LGA</div>
+          <div class="podium-votes">${c.votes.toLocaleString()} <span>votes</span></div>
+        </div>
+        <div class="podium-base podium-base-${rank}"></div>
       </div>
     `
-    })
-    .join('')
+  }
 
-  if (window.lucide) window.lucide.createIcons()
-
-  grid.querySelectorAll('.contestant-card').forEach((card) => {
-    card.addEventListener('click', () => handleVote(card.dataset.name))
-  })
-
-  grid.querySelectorAll('.contestant-vote-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation()
-      handleVote(btn.dataset.name)
-    })
-  })
+  container.innerHTML = `
+    <div class="podium-stage">
+      ${podiumCard(second, 2)}
+      ${podiumCard(first, 1)}
+      ${podiumCard(third, 3)}
+    </div>
+  `
 }
+
 
 function renderHomeLeaderboard(contestants) {
   const leaderboard = document.getElementById('home-leaderboard')

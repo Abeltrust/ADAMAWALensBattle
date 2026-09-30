@@ -80,12 +80,29 @@
           <h1 class="page-header-title">Official Contestants</h1>
           <div class="gold-line"></div>
           <p class="page-header-subtitle">
-            Twelve photographers. One champion. Browse the gallery and cast your vote for your favorite.
+            Twenty-one photographers. One champion. Browse the gallery and cast your vote for your favorite.
           </p>
         </div>
       </section>
 
       <section class="section">
+        <div class="contestants-search-wrap">
+          <div class="contestants-search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input
+              type="text"
+              id="contestants-search"
+              class="contestants-search-input"
+              placeholder="Search by name or LGA..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button id="contestants-search-clear" class="search-clear-btn" aria-label="Clear search" style="display:none;">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="contestants-search-count" id="search-count"></div>
+        </div>
 
         <div class="contestants-grid" id="contestants-grid">
           <div class="loading-spinner"></div>
