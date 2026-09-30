@@ -242,9 +242,25 @@ export function showVoteConfirmModal(contestant) {
       </div>
 
       <div class="vote-modal-body">
-        <p class="vote-modal-instruction">
-          Transfer <strong>&#x20A6;100</strong> per vote to the official Sterling Bank account below, then tap <strong>Send Proof on WhatsApp</strong> to submit your receipt.
-        </p>
+        <div class="vote-qty-section">
+          <div class="vote-qty-header">
+            <span class="vote-qty-label">How Many Votes?</span>
+            <span class="vote-qty-total" id="vote-total-display">&#x20A6;100 (1 Vote)</span>
+          </div>
+          <div class="vote-qty-controls">
+            <button class="vote-qty-btn" id="vote-qty-minus" type="button" aria-label="Decrease votes">-</button>
+            <input type="number" class="vote-qty-input" id="vote-qty-input" value="1" min="1" max="1000" />
+            <button class="vote-qty-btn" id="vote-qty-plus" type="button" aria-label="Increase votes">+</button>
+          </div>
+          <div class="vote-presets">
+            <button class="vote-preset-chip active" type="button" data-count="1">1 Vote</button>
+            <button class="vote-preset-chip" type="button" data-count="5">5 Votes</button>
+            <button class="vote-preset-chip" type="button" data-count="10">10 Votes</button>
+            <button class="vote-preset-chip" type="button" data-count="20">20 Votes</button>
+            <button class="vote-preset-chip" type="button" data-count="50">50 Votes</button>
+          </div>
+        </div>
+
         <div class="vote-payment-box">
           <div class="vote-payment-row">
             <span class="vote-payment-label">Bank</span>
@@ -267,14 +283,10 @@ export function showVoteConfirmModal(contestant) {
             <span class="vote-payment-label">Account Name</span>
             <span class="vote-payment-value">Adamawa Lens Battle</span>
           </div>
-          <div class="vote-payment-row vote-payment-cost">
-            <span class="vote-payment-label">Voting Cost</span>
-            <span class="vote-payment-value gold">&#x20A6;100 per vote</span>
-          </div>
         </div>
         <p class="vote-modal-note">
           <i data-lucide="info"></i>
-          Multiple votes allowed. Each &#x20A6;100 transferred = 1 verified vote.
+          Transfer exact amount above, then tap below to send your receipt on WhatsApp.
         </p>
       </div>
 
@@ -282,7 +294,7 @@ export function showVoteConfirmModal(contestant) {
         <button class="vote-modal-cancel" id="vote-modal-cancel">Cancel</button>
         <button class="vote-modal-confirm" id="vote-modal-confirm">
           <i data-lucide="message-circle"></i>
-          Send Proof on WhatsApp
+          <span id="vote-btn-text">Send Proof on WhatsApp</span>
         </button>
       </div>
     </div>
@@ -290,6 +302,56 @@ export function showVoteConfirmModal(contestant) {
   document.body.appendChild(modal)
   if (window.lucide) window.lucide.createIcons()
   requestAnimationFrame(() => modal.classList.add('active'))
+
+  const qtyInput = document.getElementById('vote-qty-input')
+  const totalDisplay = document.getElementById('vote-total-display')
+  const btnText = document.getElementById('vote-btn-text')
+  const minusBtn = document.getElementById('vote-qty-minus')
+  const plusBtn = document.getElementById('vote-qty-plus')
+  const presetChips = modal.querySelectorAll('.vote-preset-chip')
+
+  const updateTotal = () => {
+    let val = parseInt(qtyInput.value, 10)
+    if (isNaN(val) || val < 1) val = 1
+    qtyInput.value = val
+    const cost = val * 100
+    const label = val === 1 ? '1 Vote' : `${val} Votes`
+    totalDisplay.innerHTML = `&#x20A6;${cost.toLocaleString()} (${label})`
+    btnText.textContent = `Send Proof on WhatsApp (₦${cost.toLocaleString()})`
+
+    presetChips.forEach(chip => {
+      if (parseInt(chip.dataset.count, 10) === val) {
+        chip.classList.add('active')
+      } else {
+        chip.classList.remove('active')
+      }
+    })
+  }
+
+  minusBtn.addEventListener('click', () => {
+    let val = parseInt(qtyInput.value, 10) || 1
+    if (val > 1) {
+      qtyInput.value = val - 1
+      updateTotal()
+    }
+  })
+
+  plusBtn.addEventListener('click', () => {
+    let val = parseInt(qtyInput.value, 10) || 1
+    qtyInput.value = val + 1
+    updateTotal()
+  })
+
+  qtyInput.addEventListener('input', updateTotal)
+
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      qtyInput.value = chip.dataset.count
+      updateTotal()
+    })
+  })
+
+  updateTotal()
 
   const closeModal = () => {
     modal.classList.remove('active')
@@ -301,18 +363,16 @@ export function showVoteConfirmModal(contestant) {
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
 
   document.getElementById('vote-modal-confirm').addEventListener('click', () => {
-    // Note: Clicking the button does NOT increment votes on the site.
-    // Votes only update when the admin verifies payment and enters them in Google Sheets.
-    const message = 'ADAMAWA LENS BATTLE 2026 — VOTE\n\n'
-      + 'Contestant No. ' + contestant.number + '\n'
-      + 'Name: ' + contestant.name + '\n'
-      + 'LGA: ' + contestant.lga + '\n\n'
-      + 'I have made a payment of \u20a6100 to:\n'
-      + 'Bank: Sterling Bank\n'
-      + 'Account No: xxxxxxxxx\n'
-      + 'Account Name: Adamawa Lens Battle\n\n'
-      + 'Please find my proof of payment attached.\n'
-      + 'I vote for ' + contestant.name + ' to win the Adamawa Lens Battle 2026!'
+    let voteCount = parseInt(qtyInput.value, 10) || 1
+    if (voteCount < 1) voteCount = 1
+    const totalAmount = voteCount * 100
+    const voteWord = voteCount === 1 ? '1 vote' : `${voteCount} votes`
+
+    const message = `ADAMAWA LENS BATTLE 2026 — VOTE PROOF\n\n`
+      + `• Contestant: #${contestant.number || ''} ${contestant.name} (${contestant.lga || ''} LGA)\n`
+      + `• Votes: ${voteWord} (₦${totalAmount.toLocaleString()})\n\n`
+      + `I have made payment to Sterling Bank (Adamawa Lens Battle).\n`
+      + `Payment proof attached — kindly verify and credit my vote(s)!`
 
     const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message)
     window.open(whatsappUrl, '_blank')
