@@ -264,14 +264,14 @@ export function showVoteConfirmModal(contestant) {
         <div class="vote-payment-box">
           <div class="vote-payment-row">
             <span class="vote-payment-label">Bank</span>
-            <span class="vote-payment-value">Sterling Bank</span>
+            <span class="vote-payment-value">Opay</span>
           </div>
           <div class="vote-payment-row">
             <span class="vote-payment-label">Account No.</span>
             <span class="vote-payment-value acct-num" style="display:flex;align-items:center;gap:8px;">
-              <span id="acct-number-text">xxxxxxxxx</span>
+              <span id="acct-number-text">7037491860</span>
               <button id="copy-acct-btn" title="Copy account number" onclick="(function(){
-                navigator.clipboard.writeText('xxxxxxxxx').then(function(){
+                navigator.clipboard.writeText('7037491860').then(function(){
                   var btn=document.getElementById('copy-acct-btn');
                   btn.textContent='✓ Copied!';
                   setTimeout(function(){btn.textContent='Copy';},2000);
@@ -281,7 +281,7 @@ export function showVoteConfirmModal(contestant) {
           </div>
           <div class="vote-payment-row">
             <span class="vote-payment-label">Account Name</span>
-            <span class="vote-payment-value">Adamawa Lens Battle</span>
+            <span class="vote-payment-value">Joshua Geoffrey</span>
           </div>
         </div>
         <p class="vote-modal-note">
@@ -371,7 +371,7 @@ export function showVoteConfirmModal(contestant) {
     const message = `ADAMAWA LENS BATTLE 2026 — VOTE PROOF\n\n`
       + `• Contestant: #${contestant.number || ''} ${contestant.name} (${contestant.lga || ''} LGA)\n`
       + `• Votes: ${voteWord} (₦${totalAmount.toLocaleString()})\n\n`
-      + `I have made payment to Sterling Bank (Adamawa Lens Battle).\n`
+      + `I have made payment to Opay (Joshua Geoffrey).\n`
       + `Payment proof attached — kindly verify and credit my vote(s)!`
 
     const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message)
